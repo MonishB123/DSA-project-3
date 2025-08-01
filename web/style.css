@@ -1,0 +1,31 @@
+h1{
+    margin: 0;
+    font-family: "Pixelify Sans", sans-serif;
+    font-size: 24px;
+    text-align: left;
+    outline-color: black;
+    outline-style: groove;
+    padding: 5px;
+}
+
+table{
+    border-collapse: collapse;
+}
+
+td, tr{
+    border: 1px solid black;
+    padding: 7px;
+    text-align: center;
+}
+
+#search-button{
+    padding: 14px;
+}
+
+#day-stats{
+    padding: 7px;
+}
+
+.country-chart{
+
+}
