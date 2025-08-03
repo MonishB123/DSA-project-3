@@ -1,15 +1,39 @@
 
 var currCountry;
 
-const countrySearchButton = document.getElementById("search-button");
-countrySearchButton.addEventListener('keyup', (event)=>{
-    if(event.key == 'Enter'){
-        var button = document.getElementById("country-value");
-        currCountry = button.value;
-        const data = {
-            country : button.value
-        };
-        fetch("http://127.0.0.1:5000/get-variants", {
+//Fetch Countries
+const countrySelector = document.getElementById("country");
+fetch("http://127.0.0.1:5000/get-countries", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json; charset=UTF-8'
+            },
+            body: JSON.stringify()
+        })
+        .then(response => {
+            console.log(response);
+            return response.json();
+        })
+        .then(data =>{
+            countryList = data['countries'];
+            
+            for(const country of countryList){
+                const countryElem = document.createElement("option");
+                countryElem.textContent = country;
+                countrySelector.append(countryElem);
+            }
+            //Add sorting button
+            const sortButton = document.createElement("button");
+            sortButton.textContent = "Sort Countries by Total Growth";
+            sortButton.id = "sort-button";
+            const selectArea = document.getElementById("search-button");
+            selectArea.append(sortButton);
+        });
+
+countrySelector.addEventListener('change', function(){
+    currCountry = this.value;
+    data = {country : currCountry};
+    fetch("http://127.0.0.1:5000/get-variants", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json; charset=UTF-8'
@@ -20,24 +44,18 @@ countrySearchButton.addEventListener('keyup', (event)=>{
             console.log(response);
             return response.json();
         })
-        .then(variantData =>{
-            var variantSelect = document.getElementById("variants");
-
-            const variantElem = document.createElement("option");
-            variantSelect.innerHTML = "";
-            variantElem.textContent = "";
-            variantSelect.append(variantElem);
-            for(const variant of variantData['variants']){
+        .then(data =>{
+            variants = data['variants']
+            var variantSelect = document.getElementById("variants")
+            for(const variant of variants){
                 const variantElem = document.createElement("option");
                 variantElem.textContent = variant;
                 variantSelect.append(variantElem);
             }
-            button.value = "";
         });
+})
 
-    }
-});
-
+//Fetch date data given country and variant
 const variantSelector = document.getElementById("variants");
 variantSelector.addEventListener('change', function(){
     const currVariant = this.value;
