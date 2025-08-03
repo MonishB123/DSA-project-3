@@ -1,27 +1,30 @@
 from flask import Flask, Response, jsonify, request
 import json
 from flask_cors import CORS
+import pandas as pd
 
+csv_path = "covid-variants.csv"
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
+covid_data = pd.DataFrame()
 
 #Given a country name, returns a dict with all the countries variants
 @app.route('/get-variants', methods=["POST"])
 def getVariants():
+    #Read input
     data = request.get_json()
     country = data["country"]
     
-    #example data (testing API)
-    countryVariants = {
-        "United States" : ["B12", "Novid"],
-        "France" : ["Norovirus", "C19"]
-    }
-    data = {"variants" : countryVariants[country]}
+    df = covid_data[covid_data["location"] == country]
+    variants = df["variant"].unique().tolist()
+
+    data = {"variants" : variants}
     return jsonify(data)
 
 #Given a country name and variant, return a dict with dates and the number of infections on that day
 @app.route('/get-day-stats', methods=["POST"])
 def getDayStats():
+    #Read input
     data = request.get_json()
     country = data["country"]
     variant = data["variant"]
@@ -40,4 +43,5 @@ def getDayStats():
 
 
 if __name__ == "__main__":
+    covid_data = pd.read_csv(csv_path)
     app.run(debug=True)
