@@ -1,50 +1,32 @@
-h1{
-    margin: 0 0 15px 0;
-    font-family: "Pixelify Sans", sans-serif;
-    font-size: 28px;
-    text-align: left;
-    outline: 2px groove black;
-    padding: 10px;
-    background-color: #e0e0e0;
-    border-radius: 5px;
-}
-
-table{
-    border-collapse: collapse;
-}
-
-td, tr{
-    border: 1px solid black;
-    padding: 7px;
-    text-align: center;
-}
-
-tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-#pref-table td:first-child,
-#daily-table td:first-child {
-    text-align: left;
-}
-
-#search-button{
-    padding: 14px;
-}
-
-#day-stats{
-    padding: 7px;
-}
-
-button:hover, select:hover {
-    background-color: #f0f0f0;
-}
-
-img#graph {
-    display: block;
-    margin-top: 20px;
-    max-width: 100%;
-    height: auto;
-    border: 1px solid #aaa;
-    border-radius: 5px;
-}
+<!DOCTYPE html>
+<html>
+    <link rel="stylesheet" href="style.css">
+    <head>
+        <div style="display: flex;">
+            <div stye="width: 50%"> <h1>Covid Variant Tracker</h1> </div>
+        </div>
+    </head>
+    <body>
+        <div style="display: flex; padding-top: 10px;">    
+            <div id="search-button">
+                <input id="country-value" type="text" placeholder="Search Country">
+                </input>
+                <select name="variants" id="variants">
+                <option> </option>
+                </select>
+            </div>
+            <div id="day-stats">
+                <table id="daily-table">
+                    <tr>
+                        <td>Date</td>
+                        <td>Total Infections</td>
+                    </tr>
+                </table>
+            </div>
+            <div id="country-stats">
+                
+            </div>
+        </div>
+        <script src="script.js"></script>
+    </body>
+</html>
