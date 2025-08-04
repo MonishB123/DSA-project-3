@@ -21,15 +21,14 @@ def growth(data, country):
                             max_case = (date, num_cases)
                         sum+= num_cases
 
-                date1 = datetime.strptime(max_case[0], "%m-%d-%y") # Year, Month, Day
-                date2 = datetime.strptime(start[0], "%m-%d-%y")
+                date1 = datetime.strptime(max_case[0], "%Y-%m-%d") # Year, Month, Day
+                date2 = datetime.strptime(start[0], "%Y-%m-%d")
                 diff = (date1 - date2).days
                 if(diff!=0):
                     my_dict[strain] = ((max_case[1]/start[1])**(1/diff))-1
                 else:
                     my_dict[strain] = -1
         return max(my_dict, key=my_dict.get)
-
 
 
 if __name__ == "__main__":
