@@ -8,6 +8,29 @@ app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 covid_data = pd.DataFrame()
 
+
+#Sort countries using quick sort based on values in data mapping
+def quickSort(countries, country_dict):
+    if len(countries) <= 1:
+        return countries
+
+    #pivot strategy: use last element
+    pivot = countries[-1]
+    less_sub = []
+    high_sub = []
+    for country in countries:
+        if country_dict[country] < country_dict[pivot]:
+            less_sub.append(country)
+        elif country_dict[country] > country_dict[pivot]:
+            high_sub.append(country)
+    
+    less_sub = quickSort(less_sub, country_dict)
+    high_sub = quickSort(high_sub, country_dict)  
+
+    sortedCountries = less_sub + [pivot] + high_sub
+    return sortedCountries
+
+
 #Given a country name, returns a dict with all the countries variants
 @app.route('/get-variants', methods=["POST"])
 def getVariants():
