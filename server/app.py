@@ -11,15 +11,30 @@ covid_data = pd.DataFrame()
 #Given a country name, returns a dict with all the countries variants
 @app.route('/get-variants', methods=["POST"])
 def getVariants():
-    #Read input
     data = request.get_json()
     country = data["country"]
-    
+
     df = covid_data[covid_data["location"] == country]
     variants = df["variant"].unique().tolist()
 
-    data = {"variants" : variants}
+    data_dict = {}
+    for i, row in df.iterrows():
+        country = row["location"]
+        variant = row["variant"]
+        date = row["date"]
+        infections = row["num_sequences"]
+        if country in data_dict:
+            if variant in data_dict[country]:
+                data_dict[country][variant].update({date : infections})
+            else:
+                data_dict[country].update({variant : {date : infections}})
+        else:
+            data_dict.update({country : {variant : {date : infections}}})
+ 
+    data = {"variants" : variants,
+            "most_infections" : growth.growth(data_dict, country)}
     return jsonify(data)
+
 
 #Given a country name and variant, return a dict with dates and the number of infections on that day
 @app.route('/get-day-stats', methods=["POST"])
