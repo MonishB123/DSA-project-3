@@ -50,6 +50,15 @@ countrySelector.addEventListener('change', function(){
                 variantElem.textContent = variant;
                 variantSelect.append(variantElem);
             }
+
+            const prevMostInfections = document.getElementById("infections");
+            if(prevMostInfections){
+                prevMostInfections.remove();
+            }
+            const mostInfectionElem = document.createElement("div");
+            mostInfectionElem.id = "infections"
+            mostInfectionElem.textContent = `Most infectious variant: ${data["most_infections"]}`;
+            document.getElementById("search-button").append(mostInfectionElem);
         });
 })
 
